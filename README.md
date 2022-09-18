@@ -1,47 +1,37 @@
-# Acurite2mqtt Container
+# AcuriteMQTT Container
 
-## Based on the Home Assistant Add-on: [Acurite2mqtt](https://github.com/thejeffreystone/hassio_addons/tree/main/acurite2mqtt)
-
+## Fork of acurite2mqtt by Matt Coleman (colemamd) : [Acurite2mqtt](https://github.com/colemamd/acurite2mqtt)
 A standalone container for a software defined radio tuned to listen for 433MHz RF transmissions from Acurite Weather Sensors and republish the data via MQTT, specifically for consumption in Home Assistant.
 
 ## Configuration
 
-Map ```options.json``` to ```/data/options.json```.
 
 Sample docker-compose:
 
 ```yaml 
 version: "3.6"
-services:
-    acurite2mqtt:
-      container_name: acurite
-      image: colemamd/acurite2mqtt
-      devices:
-        - "/dev/bus/usb"
-      volumes:
-        - /docker/acurite2mqtt/options.json:/data/options.json
-      restart: unless-stopped
-```
-
-Example options.json:
-
-```json
-{
-    "mqtt_host": "192.168.0.50",
-    "mqtt_port": "1883",
-    "mqtt_user": "user",
-    "mqtt_password": "password",
-    "mqtt_retain": "true",
-    "mqtt_topic": "rtl_433",
-    "protocol": "-R 11 -R 40 -R 41 -R 55 -R 74",
-    "units": "customary",
-    "expire_after": 60,
-    "discovery_prefix": "homeassistant",
-    "discovery_interval": 600,
-    "whitelist_enable": "false",
-    "whitelist": "",
-    "debug": "false"
-}
+    services:
+        acurite2mqtt:
+        container_name: acurite
+        image: colemamd/acuritemqtt
+        devices:
+         - "/dev/bus/usb"
+        environment:
+            MQTT_HOST: "192.168.0.50"
+            MQTT_PORT: "1883"
+            MQTT_USER: "user"
+            MQTT_PASSWORD: "password"
+            MQTT_RETAIN: "true"
+            MQTT_TOPIC: "rtl_433"
+            PROTOCOL: "-R 11 -R 40 -R 41 -R 55 -R 74"
+            UNITS: "customary"
+            EXPIRE_AFTER: 60
+            DISCOVERY_PREFIX: "homeassistant"
+            DISCOVERY_INTERVAL: 600
+            WHITELIST_ENABLE: "false"
+            WHITELIST: ""
+            DEBUG: "false"
+        restart: unless-stopped
 ```
 
 ### Option: `mqtt_host`
