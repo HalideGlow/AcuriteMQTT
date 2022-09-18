@@ -1,0 +1,43 @@
+version: '3'
+networks:
+  homeassistant:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.99.0/24
+          gateway: 172.27.99.1
+services:
+  mosquitto:
+      image: "eclipse-mosquitto:1.6"
+      container_name: mosquitto
+      restart: unless-stopped
+      volumes:
+        - mosquitto-config:/mosquitto/config
+        - mosquitto-data:/mosquitto/data
+        - mosquitto-log:/mosquitto/log
+        - /etc/localtime:/etc/localtime:ro
+      networks:
+        homeassistant:
+          ipv4_address: 172.27.99.6
+      ports:
+        - 1883:1883
+  acurite2mqtt:
+      container_name: acurite
+      image: colemamd/acurite2mqtt
+      devices:
+       - "/dev/bus/usb/"
+      networks:
+        homeassistant:
+          ipv4_address: 172.27.99.7
+      volumes:
+        - acurite2mqtt:/data/
+      restart: unless-stopped
+
+volumes:
+  mosquitto-config:
+  mosquitto-data:
+  mosquitto-log:
+  acurite2mqtt:
