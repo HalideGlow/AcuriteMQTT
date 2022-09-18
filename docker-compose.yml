@@ -27,8 +27,6 @@ services:
   acurite2mqtt:
       container_name: acurite
       image: 31e5450e7115
-      devices:
-       - "/dev/bus/usb/"
       networks:
         homeassistant:
           ipv4_address: 172.27.99.7
