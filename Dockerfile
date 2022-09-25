@@ -6,14 +6,9 @@ LABEL Description="This image is used to start the RTL433 to HASS script that wi
 
 # install rtl_433, rtl-sdr, libusb, mosquitto-clients, python3 and py-pip
 # python and pip deps of rtl_433_mqtt_hass.py
-RUN apk add --no-cache rtl-sdr rtl_433 libusb mosquitto-clients python3 py-pip
+RUN apk add --no-cache rtl-sdr rtl_433 libusb mosquitto-clients python3 py3-paho-mqtt
 
 WORKDIR /data
-
-# Install Paho-MQTT client
-RUN python3 -m venv paho-mqtt-env
-RUN source env/bin/activate
-RUN pip3 install paho-mqtt
 
 # Copy scripts, make executable
 COPY entry.sh rtl_433_mqtt_hass.py /scripts/
@@ -23,18 +18,18 @@ RUN chmod +x /scripts/rtl_433_mqtt_hass.py
 # Define environment variables
 # Use this variable when creating a container to specify the MQTT broker host.
 ENV MQTT_HOST 127.0.0.1
-ENV MQTT_PORT 1883
-ENV MQTT_USERNAME ""
-ENV MQTT_PASSWORD ""
-ENV MQTT_RETAIN "True"
-ENV MQTT_TOPIC rtl_433
-ENV PROTOCOL ""
-ENV WHITELIST_ENABLE False
-ENV EXPIRE_AFTER 0
-ENV WHITELIST ""
-ENV DISCOVERY_PREFIX homeassistant
-ENV DISCOVERY_INTERVAL 600
-ENV DEBUG False
+    MQTT_PORT 1883
+    MQTT_USERNAME ""
+    MQTT_PASSWORD ""
+    MQTT_RETAIN "True"
+    MQTT_TOPIC rtl_433
+    PROTOCOL ""
+    WHITELIST_ENABLE False
+    EXPIRE_AFTER 0
+    WHITELIST ""
+    DISCOVERY_PREFIX homeassistant
+    DISCOVERY_INTERVAL 600
+    DEBUG False
 
 # Execute entry script
 ENTRYPOINT [ "/scripts/entry.sh" ]
