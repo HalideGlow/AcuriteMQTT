@@ -66,7 +66,7 @@ This determines what devices the software listens to. `-R 11 -R 40 -R 41 -R 55 -
 is the Accurite sensors. If the protocol is blank it will listen for all devices
 which may be noisy.
 
-For all possible protocols visit <https://github.com/colemamd/acurite2mqtt/PROTOCOLS.md>
+For all possible protocols visit <https://clglb.ddns.net/HalideGlow/AcuriteMQTT/-/blob/main/PROTOCOLS.md>
 
 ### Option: `whitelist_enable`
 
