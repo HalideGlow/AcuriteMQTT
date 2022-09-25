@@ -14,7 +14,7 @@ echo "Starting RTL_433 with parameters:"
 echo "MQTT Host =" $MQTT_HOST
 echo "MQTT port =" $MQTT_PORT
 echo "MQTT User =" $MQTT_USERNAME
-echo "MQTT Password =" $MQTT_PASSWORD
+echo "MQTT Password =" $(sha256sum $MQTT_PASSWORD)
 echo "MQTT Topic =" $MQTT_TOPIC
 echo "MQTT Retain =" $MQTT_RETAIN
 echo "PROTOCOL =" $PROTOCOL
