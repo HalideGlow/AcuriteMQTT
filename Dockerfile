@@ -11,6 +11,8 @@ RUN apk add --no-cache rtl-sdr rtl_433 libusb mosquitto-clients python3 py-pip
 WORKDIR /data
 
 # Install Paho-MQTT client
+RUN python3 -m venv paho-mqtt-env
+RUN source env/bin/activate
 RUN pip3 install paho-mqtt
 
 # Copy scripts, make executable
