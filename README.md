@@ -13,7 +13,7 @@ version: "3.6"
     services:
         acurite2mqtt:
         container_name: acurite
-        image: colemamd/acuritemqtt
+        image: halideglow/acuritemqtt
         devices:
          - "/dev/bus/usb"
         environment:
