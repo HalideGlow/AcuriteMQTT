@@ -46,7 +46,8 @@ mappings = {
         "config": {
             "device_class": "timestamp",
             "name": "last_seen",
-            "unit_of_measurement": "{{ value }}"
+            "unit_of_measurement": "",
+            "value_template": "{{ value }}"
         }
     },
     "freq": {
@@ -63,10 +64,9 @@ mappings = {
         "device_type": "sensor",
         "object_suffix": "channel",
         "config": {
-            "device_class": "",
-            "name": "",
+            "name": "device_channel",
             "unit_of_measurement": "",
-            "value_tempate": "{{ value }}"
+            "value_template": "{{ value }}"
         }
     },
     "temperature_C": {
@@ -106,7 +106,29 @@ mappings = {
             "device_class": "temperature",
             "name": "Temperature",
             "unit_of_measurement": "°F",
-            "assumed_state": "True",
+            "assumed_state" : "True",
+            "value_template": "{{ value|float }}"
+        }
+    },
+     "temperature_1_F": {
+        "device_type": "sensor",
+        "object_suffix": "F",
+        "config": {
+            "device_class": "temperature",
+            "name": "Temperature 1",
+            "unit_of_measurement": "°F",
+            "assumed_state" : "True",
+            "value_template": "{{ value|float }}"
+        }
+    },
+    "temperature_2_F": {
+        "device_type": "sensor",
+        "object_suffix": "F",
+        "config": {
+            "device_class": "temperature",
+            "name": "Temperature 2",
+            "unit_of_measurement": "°F",
+            "assumed_state" : "True",
             "value_template": "{{ value|float }}"
         }
     },
@@ -345,6 +367,7 @@ mappings = {
         "config": {
             "device_class": "signal_strength",
             "unit_of_measurement": "dB",
+            "entity_category": "diagnostic",
             "value_template": "{{ value|float|round(2) }}"
         }
     },
@@ -355,7 +378,6 @@ mappings = {
         "config": {
             "device_class": "signal_strength",
             "unit_of_measurement": "dB",
-            "entity_category": "diagnostic",
             "value_template": "{{ value|float|round(2) }}"
         }
     },
@@ -452,8 +474,18 @@ mappings = {
             "unit_of_measurement": "mi",
             "value_template": "{{ value|int }}"
         }
+    
     },
-
+    "consumption": {
+        "device_type": "meter",
+        "object_suffix": "meter",
+        "config": {
+            "device_class": "gas",
+            "name": "meter",
+            "unit_of_measurement": "ft³",
+            "value_template": "{{ value|float }}"
+        }
+    },
     "strike_count": {
         "device_type": "sensor",
         "object_suffix": "strcnt",
@@ -530,7 +562,11 @@ def publish_config(mqttc, topic, model, instance, channel, mapping):
 
     # add Home Assistant device info
 
-    manufacturer, model = model.split("-", 1)
+     # Check for missing manufacturer info
+    if '-' in model:
+        manufacturer, model = model.split("-", 1)
+    else:
+        manufacturer = 'Unknown'
 
     device = {}
     device["identifiers"] = instance
