@@ -3,8 +3,6 @@
 # Exit immediately if a command exits with a non-zero status:
 set -e
 export LANG=C
-PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
-export LD_LIBRARY_PATH=/usr/local/lib64
 
 # Start the listener and enter an endless loop
 echo "Starting RTL_433 with parameters:"

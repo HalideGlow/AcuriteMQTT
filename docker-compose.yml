@@ -11,19 +11,19 @@ networks:
           gateway: 172.27.99.1
 services:
   mosquitto:
-      image: "eclipse-mosquitto:1.6"
       container_name: mosquitto
-      restart: unless-stopped
+      image: "eclipse-mosquitto:1.6"
+      networks:
+        homeassistant:
+          ipv4_address: 172.27.99.6
       volumes:
         - mosquitto-config:/mosquitto/config
         - mosquitto-data:/mosquitto/data
         - mosquitto-log:/mosquitto/log
         - /etc/localtime:/etc/localtime:ro
-      networks:
-        homeassistant:
-          ipv4_address: 172.27.99.6
       ports:
         - 1883:1883
+      restart: unless-stopped
   acuritemqtt:
       container_name: acurite
       image: acuritemqtt:latest
@@ -32,8 +32,10 @@ services:
           ipv4_address: 172.27.99.7
       volumes:
         - acuritemqtt:/data/
+      devices:
+        - "/dev/bus/usb"
       environment:
-          MQTT_HOST: "192.168.0.50"
+          MQTT_HOST: "mosquitto"
           MQTT_PORT: "1883"
           MQTT_USERNAME: "user"
           MQTT_PASSWORD: "password"
@@ -52,4 +54,4 @@ volumes:
   mosquitto-config:
   mosquitto-data:
   mosquitto-log:
-  31e5450e7115:
+  acuritemqtt:
